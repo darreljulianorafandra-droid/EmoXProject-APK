@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android APK Pygame
 on: [push, workflow_dispatch]
 
 jobs:
@@ -19,6 +19,11 @@ jobs:
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
           pip install --upgrade buildozer cython virtualenv
 
+      - name: Fix Pygame Build Issue
+        run: |
+          # Trik biar Buildozer mau nerima Pygame
+          pip install git+https://github.com/kivy/python-for-android.git
+          
       - name: Build with Buildozer
         run: |
           buildozer android debug
@@ -26,5 +31,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: EmoXProject-APK
+          name: EmoXProject-Pygame-APK
           path: bin/*.apk
